@@ -1,0 +1,19 @@
+void Solve(struct TreeNode *root, int level, int *minLevel)
+{
+    if(root == NULL) return;
+    if(root->left == NULL && root->right == NULL)
+    {
+        if(*minLevel == -1 || level < *minLevel)
+            *minLevel = level;
+    }
+    Solve(root->left,level+1,minLevel);
+    Solve(root->right,level+1,minLevel);
+}
+
+int minDepth(struct TreeNode* root){
+    if(root == NULL)
+        return 0;
+    int minLevel = -1;
+    Solve(root,1,&minLevel);
+    return minLevel;
+}
