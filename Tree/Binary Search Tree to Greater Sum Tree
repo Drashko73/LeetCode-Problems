@@ -1,0 +1,30 @@
+int sumGreater(struct TreeNode *root, int val)
+{
+    if(!root) return 0;
+    if(root->val != val && root->val > val)
+        return root->val + sumGreater(root->left,val) + sumGreater(root->right,val);
+    return 0 + sumGreater(root->left,val) + sumGreater(root->right,val);
+}
+
+void Solve(struct TreeNode *globalRoot, struct TreeNode *pomRoot, struct TreeNode **newRoot)
+{
+    if(!pomRoot)
+        return;
+    
+    int val1 = sumGreater(globalRoot,pomRoot->val);
+    
+    struct TreeNode *nova = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    nova->left = nova->right = NULL;
+    nova->val = val1 + pomRoot->val;
+    *newRoot = nova;
+    
+    Solve(globalRoot,pomRoot->left,&((*newRoot)->left));
+    Solve(globalRoot,pomRoot->right,&((*newRoot)->right));
+}
+
+struct TreeNode* bstToGst(struct TreeNode* root){
+    struct TreeNode *newRoot = NULL;
+    
+    Solve(root,root,&newRoot);
+    return newRoot;
+}
