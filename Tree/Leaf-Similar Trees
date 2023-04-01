@@ -1,0 +1,48 @@
+int numOfLeaves(struct TreeNode *root){
+    if(!root) return 0;
+    if(root->left == NULL && root->right == NULL)
+        return 1;
+    return numOfLeaves(root->left) + numOfLeaves(root->right);
+}
+
+void TraverseLeaves(struct TreeNode *root, int *array, int *position)
+{
+    if(root == NULL) return;
+    if(root->left == NULL && root->right == NULL){
+        array[*position] = root->val;
+        (*position)++;
+    }
+    TraverseLeaves(root->left,array,position);
+    TraverseLeaves(root->right,array,position);
+}
+
+int CheckArrays(int *array1, int *array2, int size)
+{
+    for(int i=0;i<size;i++)
+    {
+        if(array1[i] != array2[i])
+            return 0;
+    }
+    return 1;
+}
+
+int MakeArrays(struct TreeNode **root1, struct TreeNode **root2)
+{
+    int *arr1, size1, *arr2, size2, pos1 = 0, pos2 = 0;
+    size1 = numOfLeaves(*root1);
+    size2 = numOfLeaves(*root2);
+    
+    if(size1 != size2)
+        return 0;
+    
+    arr1 = (int*)malloc(size1*sizeof(int));
+    arr2 = (int*)malloc(size2*sizeof(int));
+    
+    TraverseLeaves(*root1,arr1,&pos1);
+    TraverseLeaves(*root2,arr2,&pos2);
+    
+    return CheckArrays(arr1,arr2,size1);
+}
+bool leafSimilar(struct TreeNode* root1, struct TreeNode* root2){
+    return(MakeArrays(&root1,&root2))?true:false;
+}
