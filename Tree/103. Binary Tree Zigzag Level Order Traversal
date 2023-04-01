@@ -1,0 +1,86 @@
+int dp(struct TreeNode *root) {
+    if(root == NULL)
+        return 0;
+    
+    int dl = 0;
+    int dr = 0;
+    dl = dp(root->left);
+    dr = dp(root->right);
+    return (dl > dr)?dl+1:dr+1;
+}
+int numOfNodesByLevel(struct TreeNode *root, int lvl, int reqLvl)
+{
+    if(root == NULL)
+        return 0;
+    
+    if(lvl == reqLvl)
+        return 1 + numOfNodesByLevel(root->left,lvl+1,reqLvl) + numOfNodesByLevel(root->right,lvl+1,reqLvl);
+    
+    return 0 + numOfNodesByLevel(root->left,lvl+1,reqLvl) + numOfNodesByLevel(root->right,lvl+1,reqLvl);
+}
+
+void makeArray(struct TreeNode *root, int level, int reqLvl, int *array, int *pos)
+{
+    if(root == NULL)
+        return;
+    
+    if(level == reqLvl)
+    {
+        array[*pos] = root->val;
+        (*pos)++;
+    }
+    makeArray(root->left,level+1,reqLvl,array,pos);
+    makeArray(root->right,level+1,reqLvl,array,pos);
+}
+void rotateArray(int *array, int size)
+{
+    int i=0;
+    int j = size-1;
+    int pom;
+    while(i < j)
+    {
+        pom = array[i];
+        array[i] = array[j];
+        array[j] = pom;
+        
+        i++;
+        j--;
+    }
+}
+/**
+ * Return an array of arrays of size *returnSize.
+ * The sizes of the arrays are returned as *returnColumnSizes array.
+ * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
+ */
+int** zigzagLevelOrder(struct TreeNode* root, int* returnSize, int** returnColumnSizes){
+    int sizeArr = dp(root);
+    int i;
+    int **array;
+    int *returnSizes;
+    
+    *returnSize = sizeArr;
+    array = (int**)malloc(sizeArr*sizeof(int*));
+    returnSizes = (int*)malloc(sizeArr*sizeof(int));
+    
+    for(i=0;i<sizeArr;i++)
+    {
+        int numOfNodes = numOfNodesByLevel(root,0,i);
+        // printf("Size arr= %d, Broj cvorova na %d nivou = %d\n",sizeArr,i+1,numOfNodes);
+        returnSizes[i] = numOfNodes;
+        
+        int *smallArray = (int*)malloc(numOfNodes*sizeof(int));
+        
+        int position = 0;
+        makeArray(root,0,i,smallArray,&position);
+        
+        if(i % 2 == 0)
+            array[i] = smallArray;
+        else
+        {
+            rotateArray(smallArray,numOfNodes);
+            array[i] = smallArray;
+        }
+    }
+    *returnColumnSizes = returnSizes;
+    return array;
+}
