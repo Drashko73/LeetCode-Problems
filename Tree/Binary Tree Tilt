@@ -1,0 +1,19 @@
+int sumOfNodes(struct TreeNode *root)
+{
+    if(!root) return 0;
+    return root->val + sumOfNodes(root->left) + sumOfNodes(root->right);
+}
+
+void MakeTree(struct TreeNode *root)
+{
+    if(!root) return;
+    
+    root->val = abs(sumOfNodes(root->left) - sumOfNodes(root->right));
+    MakeTree(root->left);
+    MakeTree(root->right);
+}
+
+int findTilt(struct TreeNode* root){
+    MakeTree(root);
+    return sumOfNodes(root);
+}
