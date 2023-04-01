@@ -1,0 +1,22 @@
+struct TreeNode *create(int *preorder, int *inorder, int inorderStart, int inorderEnd, int *indexPreorder)
+{
+    struct TreeNode *node = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    node->val = preorder[*indexPreorder];
+    node->left = node->right = NULL;
+    (*indexPreorder)++;
+
+    int i;
+    for(i = inorderStart; i < inorderEnd; i++)
+        if(inorder[i] == node->val) break;
+
+    if(i > inorderStart) node->left = create(preorder, inorder, inorderStart, i, indexPreorder);
+    if(i < inorderEnd-1) node->right = create(preorder, inorder, i+1, inorderEnd, indexPreorder);
+
+    return node;
+}
+
+struct TreeNode* buildTree(int* preorder, int preorderSize, int* inorder, int inorderSize)
+{
+    int index = 0;
+    return create(preorder, inorder, 0, inorderSize, &index);
+}
