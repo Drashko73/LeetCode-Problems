@@ -1,0 +1,64 @@
+struct TreeNode* deleteNode(struct TreeNode* root, int key)
+{
+    struct TreeNode *pom, *save = NULL, *q;
+    
+    pom = root;
+    while(pom && pom->val != key)
+    {
+        save = pom;
+        if(key < pom->val) pom = pom->left;
+        else pom = pom->right;
+    }
+    
+    if(pom == NULL) return root; // node to delete is not fount
+    
+    if(pom->left == NULL || pom->right == NULL)
+    {
+        if(pom->left == NULL && pom->right == NULL)
+            q = NULL;
+        else if(pom->left == NULL && pom->right != NULL)
+            q = pom->right;
+        else
+            q = pom->left;
+        
+        if(!save)
+            root = q;
+        else
+        {
+            if(pom == save->left) save->left = q;
+            else save->right = q;
+        }
+        free(pom);
+    }
+    else
+    {
+        struct TreeNode *maximum, *beforeMaximum = NULL, *link;
+        
+        maximum = pom->left;
+        while(maximum->right)
+        {
+            beforeMaximum = maximum;
+            maximum = maximum->right;
+        }
+        
+        if(maximum->left == NULL)
+            link = NULL;
+        else
+            link = maximum->left;
+        
+        if(!beforeMaximum)
+        {
+            if(maximum->val < pom->val) pom->left = link;
+            else pom->right = link;
+        }
+        else
+        {
+            if(maximum == beforeMaximum->left) beforeMaximum->left = link;
+            else beforeMaximum->right = link;
+        }
+        pom->val = maximum->val;
+        free(maximum);
+    }
+    
+    return root;
+}
