@@ -1,0 +1,37 @@
+void Append(struct TreeNode **root, int value)
+{
+    struct TreeNode *pom, *save;
+    struct TreeNode *new = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    new->val = value;
+    new->left = new->right = NULL;
+    
+    if(*root == NULL)
+        *root = new;
+    else
+    {
+        pom = *root;
+        save = NULL;
+        
+        while(pom)
+        {
+            save = pom;
+            if(value < pom->val)
+                pom = pom->left;
+            else
+                pom = pom->right;
+        }
+        if(value < save->val)
+            save->left = new;
+        else
+            save->right = new;
+    }
+}
+
+struct TreeNode* bstFromPreorder(int* preorder, int preorderSize){
+    struct TreeNode *root = NULL;
+    for(int i=0;i<preorderSize;i++)
+    {
+        Append(&root,preorder[i]);
+    }
+    return root;
+}
