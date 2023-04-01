@@ -1,0 +1,45 @@
+void checkLeaves(struct TreeNode *root, int target, int *flag)
+{
+    if(!root) return;
+    if(root->left == NULL && root->right == NULL && root->val == target)
+        *flag = 1;
+    checkLeaves(root->left,target,flag);
+    checkLeaves(root->right,target,flag);
+}
+
+void removeLeaves(struct TreeNode **root, struct TreeNode *parent, int target)
+{
+    if(*root == NULL) return;
+    
+    int flag = 0;
+    if((*root)->left == NULL && (*root)->right == NULL && (*root)->val == target)
+    {
+        if(parent == NULL)
+        {
+            *root = NULL;
+            return;
+        }
+        if(parent->left == *root)
+            parent->left = NULL;
+        else
+            parent->right = NULL;
+        flag = 1;
+    }
+    if(flag) return;
+    
+    parent = *root;
+    removeLeaves(&((*root)->left),parent,target);
+    removeLeaves(&((*root)->right),parent,target);
+}
+
+struct TreeNode* removeLeafNodes(struct TreeNode* root, int target){
+    int flag = 0;
+    checkLeaves(root,target,&flag);
+    while(flag)
+    {
+        removeLeaves(&root,NULL,target);
+        flag = 0;
+        checkLeaves(root,target,&flag);
+    }
+    return root;
+}
