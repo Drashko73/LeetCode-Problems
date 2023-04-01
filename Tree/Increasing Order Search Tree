@@ -1,0 +1,23 @@
+struct TreeNode* increasingBST(struct TreeNode* root)
+{
+    if(!root) return NULL;
+
+    struct TreeNode *r = increasingBST(root->right);
+    struct TreeNode *l = increasingBST(root->left);
+
+    root->left = NULL;
+    root->right = r;
+
+    if(l != NULL)
+    {
+        struct TreeNode *pom = l;
+        while(pom->right != NULL)
+            pom = pom->right;
+
+        pom->left = NULL;
+        pom->right = root;
+        return l;    
+    }
+
+    return root;
+}
