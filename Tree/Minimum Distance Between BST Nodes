@@ -1,0 +1,30 @@
+void traverseTree(struct TreeNode *root, int val, int *minimum)
+{
+    if(!root) return;
+    
+    int s = root->val - val;
+    if(s < 0) s *= (-1);
+    
+    if(*minimum == -1 || s < *minimum)
+        *minimum = s;
+    
+    traverseTree(root->left,val,minimum);
+    traverseTree(root->right,val,minimum);
+}
+
+void calculateMin(struct TreeNode *root, int *currmin)
+{
+    if(!root) return;
+    
+    traverseTree(root->left,root->val,currmin);
+    traverseTree(root->right,root->val,currmin);
+    calculateMin(root->left,currmin);
+    calculateMin(root->right,currmin);
+}
+
+int minDiffInBST(struct TreeNode* root){
+    int minimum = -1;
+    
+    calculateMin(root,&minimum);
+    return minimum;
+}
