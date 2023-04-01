@@ -1,0 +1,56 @@
+void findNodes(struct TreeNode *root, int *arrNum, int *arrOccur, int *size)
+{
+    if(!root) return;
+    
+    int uvecanBrojac = 0,i;
+    for(i=0;i<*size;i++)
+    {
+        if(arrNum[i] == root->val)
+        {
+            arrOccur[i]++;
+            uvecanBrojac = 1;
+            break;
+        }
+    }
+    
+    if(!uvecanBrojac)
+    {
+        arrNum[*size] = root->val;
+        arrOccur[*size] = 1;
+        (*size)++;
+    }
+    findNodes(root->left,arrNum,arrOccur,size);
+    findNodes(root->right,arrNum,arrOccur,size);
+}
+
+int maximum(int *array, int size)
+{
+    int maximum = -1,i;
+    for(i=0;i<size;i++)
+    {
+        if(maximum == -1)
+            maximum = i;
+        else if(array[i] > array[maximum]) maximum = i;
+    }
+    return maximum;
+}
+
+int* findMode(struct TreeNode* root, int* returnSize){
+    int *returnArray, arrayNum[10000], arrayOccurance[10000], size = 0, count=0, maxIndex;
+    findNodes(root,arrayNum,arrayOccurance,&size);
+    
+    maxIndex = maximum(arrayOccurance,size);
+    for(int i=0;i<size;i++)
+    {
+        if(arrayOccurance[i] == arrayOccurance[maxIndex])
+        {
+            if(!count)
+                returnArray = (int*)malloc((count+1)*sizeof(int));
+            else
+                returnArray = (int*)realloc(returnArray,(count+1)*sizeof(int));
+            returnArray[count++] = arrayNum[i];
+        }
+    }
+    *returnSize = count;
+    return returnArray;
+}
