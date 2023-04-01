@@ -1,0 +1,19 @@
+struct TreeNode *solve(struct TreeNode *root)
+{
+    if(!root) return NULL;
+    if(!root->left && !root->right) return root;
+
+    struct TreeNode *l = solve(root->left);
+    if(l == NULL && root->left) return NULL;
+    struct TreeNode *r = solve(root->right);
+
+    if(l && r && root->val > l->val && root->val <= r->val) return root;
+    else if(!l && root->val < r->val) return root;
+    else if(!r && root->val > l->val) return root;
+    return NULL;
+}
+
+bool isValidBST(struct TreeNode* root)
+{
+    return (solve(root)) ? 1 : 0; 
+}
