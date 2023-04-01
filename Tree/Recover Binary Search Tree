@@ -1,0 +1,59 @@
+void solve(struct TreeNode *root, int *flg)
+{
+    if(!root || *flg) return;
+
+    // simulate adding value less than current root->val and the same value as current root->val
+    solve(root->left, flg);
+    if(*flg) return;
+    
+    int numLeft = root->val - 1;
+    int numRight = root->val;
+    struct TreeNode *pom, *save;
+
+    pom = root->left;
+    save = NULL;
+    while(pom)
+    {
+        save = pom;
+        pom = pom->right;
+    }
+
+    if(save && save->val > root->val)
+    {
+        int tmp = root->val;
+        root->val = save->val;
+        save->val = tmp;
+        *flg = 1;
+        return;
+    }
+
+    pom = root->right;
+    save = NULL;
+    while(pom)
+    {
+        save = pom;
+        pom = pom->left;
+    }
+
+    if(save && save->val < root->val)
+    {
+        int tmp = root->val;
+        root->val = save->val;
+        save->val = tmp;
+        *flg = 1;
+        return;
+    }
+
+    solve(root->right, flg);
+}
+
+void recoverTree(struct TreeNode* root)
+{
+    int flg = 0;
+    solve(root, &flg);
+    while(flg == 1)
+    {
+        flg = 0;
+        solve(root, &flg);
+    }
+}
