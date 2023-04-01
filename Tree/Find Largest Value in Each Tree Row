@@ -1,0 +1,54 @@
+int MaxDepth(struct TreeNode *root)
+{
+    int dl = 0;
+    int dr = 0;
+    if(root == NULL)
+        return 0;
+    else
+    {
+        dl = MaxDepth(root->left);
+        dr = MaxDepth(root->right);
+        return (dl > dr)?dl+1:dr+1;
+    }
+}
+
+void MakeArray(struct TreeNode *root, int **array, int level)
+{
+    if(root == NULL)
+        return;
+    else
+    {
+        if(array[level] == NULL)
+        {
+            array[level] = (int*)malloc(1*sizeof(int));
+            array[level][0] = root->val;
+        }
+        else
+        {
+            if(array[level][0] < root->val)
+                array[level][0] = root->val;
+        }
+        MakeArray(root->left,array,level+1);
+        MakeArray(root->right,array,level+1);
+    }
+}
+
+int* largestValues(struct TreeNode* root, int* returnSize){
+    int **array;
+    int *array2;
+    int i,arrSize = MaxDepth(root);
+    
+    array = (int**)malloc(arrSize*sizeof(int*));
+    array2 = (int*)malloc(arrSize*sizeof(int));
+    
+    
+    for(i=0;i<arrSize;i++)
+        array[i] = NULL;
+    
+    MakeArray(root,array,0);
+    for(i=0;i<arrSize;i++)
+        array2[i] = array[i][0];
+    
+    *returnSize = arrSize;
+    return array2;
+}
