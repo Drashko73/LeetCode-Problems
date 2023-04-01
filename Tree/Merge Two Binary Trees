@@ -1,0 +1,19 @@
+void createNew(struct TreeNode **newRoot, struct TreeNode *root1, struct TreeNode *root2)
+{
+    if(root1 == NULL && root2 == NULL) return;
+    
+    struct TreeNode *node = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    node->val = ((root1 != NULL) ? root1->val: 0) + ((root2 != NULL) ? root2->val : 0);
+    node->left = node->right = NULL;
+    *newRoot = node;
+
+    createNew(&((*newRoot)->left), (root1 != NULL) ? root1->left : NULL, (root2 != NULL) ? root2->left:NULL);
+    createNew(&((*newRoot)->right), (root1 != NULL) ? root1->right : NULL, (root2 != NULL) ? root2->right:NULL);
+}
+
+struct TreeNode* mergeTrees(struct TreeNode* root1, struct TreeNode* root2)
+{
+    struct TreeNode *newTree = NULL;
+    createNew(&newTree, root1, root2);
+    return newTree;
+}
