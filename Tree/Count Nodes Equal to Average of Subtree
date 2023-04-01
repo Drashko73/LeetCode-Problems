@@ -1,0 +1,37 @@
+int NumOfNodes(struct TreeNode *root)
+{
+    if(root == NULL)
+        return 0;
+    else
+        return 1 + NumOfNodes(root->left) + NumOfNodes(root->right);
+}
+int SumOfNodes(struct TreeNode *root)
+{
+    if(root == NULL)
+        return 0;
+    else
+        return root->val + SumOfNodes(root->left) + SumOfNodes(root->right);
+}
+
+int averageOfSubtree(struct TreeNode* root){    
+    if(root == NULL)
+        return 0;
+    else
+    {
+        int numOfNodes, sumOfNodes, average;
+        
+        numOfNodes = NumOfNodes(root);
+        sumOfNodes = SumOfNodes(root);
+        
+        if(sumOfNodes == 0)
+            average = 0;
+        else
+            average = sumOfNodes/numOfNodes;
+        //printf("%d %d %d\n",numOfNodes,sumOfNodes,average);
+        
+        if(root->val == average)
+            return 1 + averageOfSubtree(root->left) + averageOfSubtree(root->right);
+        else
+            return 0 + averageOfSubtree(root->left) + averageOfSubtree(root->right);
+    }
+}
