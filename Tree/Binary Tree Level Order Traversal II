@@ -1,0 +1,37 @@
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+def FindNodes(root,level,reqLevel):
+    if(root == None):
+        return []
+    else:
+        if(level == reqLevel):
+            return [root.val] + FindNodes(root.left,level+1,reqLevel) + FindNodes(root.right,level+1,reqLevel)
+        else:
+            return [] + FindNodes(root.left,level+1,reqLevel) + FindNodes(root.right,level+1,reqLevel)
+
+def Depth(root):
+    dl = 0
+    dr = 0
+    if(root == None):
+        return 0
+    else:
+        dl = Depth(root.left)
+        dr = Depth(root.right)
+        if(dl > dr):
+            return dl + 1
+        else:
+            return dr + 1
+class Solution(object):
+    def levelOrderBottom(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[List[int]]
+        """
+        returnList = []
+        for i in range(Depth(root),0,-1):
+            returnList.append(FindNodes(root,1,i))
+        return returnList
