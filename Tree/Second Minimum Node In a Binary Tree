@@ -1,0 +1,22 @@
+void secondMinimumValue(struct TreeNode *root, int val, int *returnVal)
+{
+    if(!root) return;
+    
+    if(root->val != val)
+    {
+        if(*returnVal == -1 || root->val < *returnVal)
+            *returnVal = root->val;
+    }
+    secondMinimumValue(root->left,val,returnVal);
+    secondMinimumValue(root->right,val,returnVal);
+}
+
+
+int findSecondMinimumValue(struct TreeNode* root){
+    if(root->left == NULL && root->right == NULL)
+        return -1;
+    
+    int returnVal = -1;
+    secondMinimumValue(root,root->val,&returnVal);
+    return returnVal;
+}
