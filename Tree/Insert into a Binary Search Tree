@@ -1,0 +1,21 @@
+struct TreeNode* insertIntoBST(struct TreeNode* root, int val){
+    struct TreeNode *new, *pom, *save;
+    new = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    new->val = val;
+    new->left = new->right = NULL;
+    
+    pom = root;
+    save = NULL;
+    while(pom)
+    {
+        save = pom;
+        pom = (val < pom->val) ? pom->left : pom->right;
+    }
+    if(!save) root = new;
+    else
+    {
+        if(val < save->val) save->left = new;
+        else save->right = new;
+    }
+    return root;
+}
