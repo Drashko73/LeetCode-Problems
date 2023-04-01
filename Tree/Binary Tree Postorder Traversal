@@ -1,0 +1,23 @@
+int *array;
+int size;
+
+void TraverseTree(struct TreeNode *root)
+{
+    if(root == NULL)
+        return;
+    else
+    {
+        TraverseTree(root->left);
+        TraverseTree(root->right);
+        array = (int*)realloc(array,(size+1)*sizeof(int));
+        array[size] = root->val;
+        size = size+1;
+    }
+}
+
+int* postorderTraversal(struct TreeNode* root, int* returnSize){
+    size = 0;
+    TraverseTree(root);
+    *returnSize = size;
+    return array;
+}
