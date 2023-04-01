@@ -1,0 +1,34 @@
+int depth(struct TreeNode *root)
+{
+    if(!root) return 0;
+    int dl = 0, dr=0;
+    dl = depth(root->left);
+    dr = depth(root->right);
+    return (dl > dr)?dl+1:dr+1;
+}
+
+void lastValueOnLevel(struct TreeNode *root, int *val, int level, int reqLevel)
+{
+    if(!root) return;
+    
+    if(level == reqLevel)
+        *val = root->val;
+    
+    lastValueOnLevel(root->left,val,level+1,reqLevel);
+    lastValueOnLevel(root->right,val,level+1,reqLevel);
+}
+
+int* rightSideView(struct TreeNode* root, int* returnSize){
+    int dp = depth(root);
+    int position = 0;
+    
+    int *array = (int*)malloc(dp*sizeof(int));
+    for(int i=0;i<dp;i++)
+    {
+        int val;
+        lastValueOnLevel(root,&val,0,i);
+        array[position++] = val;
+    }
+    *returnSize = dp;
+    return array;
+}
