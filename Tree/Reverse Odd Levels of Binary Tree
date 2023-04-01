@@ -1,0 +1,56 @@
+int depth(struct TreeNode *root)
+{
+    if(!root) return 0;
+    int dl = 0, dr = 0;
+    
+    dl = depth(root->left);
+    dr = depth(root->right);
+    return (dl > dr)? dl+1: dr+1;
+}
+
+void Solve(struct TreeNode *root, struct TreeNode **array, int level, int reqLevel, int *position)
+{
+    if(!root) return;
+    
+    if(level == reqLevel)
+        array[(*position)++] = root;
+    
+    Solve(root->left,array,level+1,reqLevel,position);
+    Solve(root->right,array,level+1,reqLevel,position);
+}
+
+struct TreeNode* reverseOddLevels(struct TreeNode* root){
+    int depthOfTree = depth(root);
+    int numOfNodes = 1, flag = 0;
+    for(int i=0;i < depthOfTree; i++)
+    {
+        if(i == 0)
+            numOfNodes = 1;
+        if(i % 2 == 1)
+        {
+            numOfNodes *= 2;
+            struct TreeNode **arrayOfNodes = (struct TreeNode**)malloc(numOfNodes*sizeof(struct TreeNode*));
+            
+            int position = 0;
+            Solve(root,arrayOfNodes,0,i,&position);
+            
+            int j,k,pom;
+            j = 0;
+            k = numOfNodes-1;
+            while(j <= k)
+            {
+                pom = arrayOfNodes[j]->val;
+                arrayOfNodes[j]->val = arrayOfNodes[k]->val;
+                arrayOfNodes[k]->val = pom;
+                j++;
+                k--;
+            }
+        }
+        else
+        {
+            if(i != 0)
+                numOfNodes*=2;
+        }
+    }
+    return root;
+}
