@@ -1,0 +1,19 @@
+int isLeaf(struct TreeNode *node){
+    if(node == NULL)
+        return 0;
+    if(node->left == NULL && node->right == NULL)
+        return 1;
+    return 0;
+}
+
+int sumOfLeftLeaves(struct TreeNode* root){
+    if(root == NULL)
+        return 0;
+    else
+    {
+        if(isLeaf(root->left))
+            return root->left->val + sumOfLeftLeaves(root->left) + sumOfLeftLeaves(root->right);
+        else
+            return 0 + sumOfLeftLeaves(root->left) + sumOfLeftLeaves(root->right);
+    }
+}
