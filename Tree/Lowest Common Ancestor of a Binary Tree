@@ -1,0 +1,19 @@
+int solve(struct TreeNode *root, struct TreeNode **ancestor, struct TreeNode *p, struct TreeNode *q)
+{
+    if(!root) return 0;
+    
+    int n = 0;
+    if(root == p || root == q)
+        n = 1 + solve(root->left,ancestor,p,q) + solve(root->right,ancestor,p,q);
+    else
+        n = 0 + solve(root->left,ancestor,p,q) + solve(root->right,ancestor,p,q);
+    
+    if(n == 2 && *ancestor == NULL) *ancestor = root;
+    return n;
+}
+
+struct TreeNode* lowestCommonAncestor(struct TreeNode* root, struct TreeNode* p, struct TreeNode* q) {
+    struct TreeNode *ancestor = NULL;
+    solve(root,&ancestor,p,q);
+    return ancestor;
+}
