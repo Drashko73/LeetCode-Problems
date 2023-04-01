@@ -1,0 +1,33 @@
+void solve(struct TreeNode *root, int currLevel, int *maxDepth, int *notNode, int *flag)
+{
+    if(root == NULL)
+    {
+        if(*maxDepth == -1)
+        {
+            *maxDepth = currLevel;
+            (*notNode)++;
+        }
+        else if(currLevel == *maxDepth)
+            (*notNode)++;
+        return;
+    }
+    
+    if(currLevel == *maxDepth && root)
+        *flag = 1;
+    
+    if(*flag) return;
+    solve(root->right,currLevel+1,maxDepth,notNode,flag);
+    if(*flag) return;
+    solve(root->left,currLevel+1,maxDepth,notNode,flag);
+}
+    
+int countNodes(struct TreeNode* root){
+    int flag = 0, dp = -1, notNode = 0;
+    
+    solve(root,0,&dp,&notNode,&flag);
+    
+    int sol = 0;
+    for(int i=0;i <= dp;i++)
+        sol += pow(2,i);
+    return sol - notNode;
+}
