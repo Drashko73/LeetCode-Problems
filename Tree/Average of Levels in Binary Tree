@@ -1,0 +1,44 @@
+int depth(struct TreeNode *root)
+{
+    if(!root)
+        return 0;
+    int dl = 0;
+    int dr = 0;
+    
+    dl = depth(root->left);
+    dr = depth(root->right);
+    return (dl > dr)?dl+1:dr+1;
+}
+
+void FindAllValuesAndSum(struct TreeNode *root, int lvl, int reqLvl, int *num, double *sum)
+{
+    if(!root)
+        return;
+    
+    if(lvl == reqLvl)
+    {
+        (*num)++;
+        (*sum) += (double)root->val;
+    }
+    FindAllValuesAndSum(root->left,lvl+1,reqLvl,num,sum);
+    FindAllValuesAndSum(root->right,lvl+1,reqLvl,num,sum);
+}
+
+double* averageOfLevels(struct TreeNode* root, int* returnSize){
+    double *array;
+    double size, sum;
+    int numOfElements;
+    
+    size = depth(root);
+    *returnSize = size;
+    array = (double*)malloc(size*sizeof(double));
+    
+    for(int i=0;i<size;i++)
+    {
+        sum = 0.0;
+        numOfElements = 0;
+        FindAllValuesAndSum(root,0,i,&numOfElements,&sum);
+        array[i] = (double)sum/numOfElements;
+    }
+    return array;
+}
