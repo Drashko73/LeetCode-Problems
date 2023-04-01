@@ -1,0 +1,24 @@
+void findMinimumDifference(struct TreeNode *root, int val, int *diff)
+{
+    if(!root) return;
+    
+    if(abs(val - root->val) < *diff || *diff == -1)
+        *diff = abs(val - root->val);
+    findMinimumDifference(root->left,val,diff);
+    findMinimumDifference(root->right,val,diff);
+}
+void TraverseAllNodes(struct TreeNode *root, int *diff)
+{
+    if(!root) return;
+    
+    findMinimumDifference(root->left,root->val,diff);
+    findMinimumDifference(root->right,root->val,diff);
+    TraverseAllNodes(root->left,diff);
+    TraverseAllNodes(root->right,diff);
+}
+int getMinimumDifference(struct TreeNode* root){
+    int difference = -1;
+    
+    TraverseAllNodes(root,&difference);
+    return difference;
+}
