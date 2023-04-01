@@ -1,0 +1,53 @@
+struct stack {
+    struct TreeNode *node;
+    struct stack *next;
+};
+
+void stackPush(struct stack **s, struct stack *new)
+{
+    struct stack *p = *s, *save = NULL;
+    while(p)
+    {
+        save = p;
+        p = p->next;
+    }
+    if(!save)
+        *s = new;
+    else
+        save->next = new;
+}
+
+void stackPop(struct stack **s)
+{
+    struct stack *tmp = *s;
+    (*s) = (*s)->next;
+    free(tmp);
+}
+
+void solve(struct TreeNode *root, struct stack **s)
+{
+    if(root)
+    {
+        solve(root->right,s);
+        
+        struct stack *new = (struct stack*)malloc(sizeof(struct stack));
+        new->node = root;
+        new->next = NULL;
+        stackPush(s,new);
+        
+        if((*s)->next != NULL)
+        {
+            root->val = root->val + (*s)->node->val;
+            stackPop(s);
+        }
+        
+        solve(root->left,s);
+    }
+}
+
+struct TreeNode* convertBST(struct TreeNode* root)
+{
+    struct stack *s = NULL, *pom, *beforePom = NULL;
+    solve(root,&s);
+    return root;
+}
