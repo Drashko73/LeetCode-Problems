@@ -1,0 +1,24 @@
+int *array;
+int size;
+
+void TraverseTree(struct Node *root)
+{
+    if(root == NULL)
+        return;
+    else
+    {
+        array = (int*)realloc(array,(size+1)*sizeof(int));
+        array[size] = root->val;
+        size++;
+        for(int i=0;i<root->numChildren;i++)
+            TraverseTree(root->children[i]);
+    }
+}
+
+int* preorder(struct Node* root, int* returnSize) {
+    array = NULL;
+    size = 0;
+    TraverseTree(root);
+    *returnSize = size;
+    return array;
+}
