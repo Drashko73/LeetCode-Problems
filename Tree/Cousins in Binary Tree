@@ -1,0 +1,60 @@
+struct TreeNode *parent;
+
+void FindLevel(struct TreeNode *root, int val, int *level,int brojac)
+{
+    if(root == NULL)
+        return;
+    else if(root->val == val)
+    {
+        *level = brojac;
+    }
+    else
+    {
+        FindLevel(root->left,val,level,brojac+1);
+        FindLevel(root->right,val,level,brojac+1);
+    }
+}
+
+void FindParent(struct TreeNode *root, int value)
+{
+    if(root == NULL)
+        return;
+    else if(root->left != NULL && root->left->val == value)
+    {
+        parent = root;
+        return;
+    }
+    else if(root->right != NULL && root->right->val == value)
+    {
+        parent = root;
+        return;
+    }
+    else
+    {
+        FindParent(root->left,value);
+        FindParent(root->right, value);
+    }
+}
+
+bool isCousins(struct TreeNode* root, int x, int y){
+    int levelOfX, levelOfY;
+    int brojac;
+    struct TreeNode *parentOfX, *parentOfY;
+    
+    brojac = 1;
+    FindLevel(root,x,&levelOfX,brojac);
+    FindLevel(root,y,&levelOfY,brojac);
+    
+    FindParent(root,x);
+    parentOfX = parent;
+    
+    FindParent(root,y);
+    parentOfY = parent;
+    
+    if(levelOfX == levelOfY)
+        if(parentOfX != parentOfY)
+            return true;
+        else
+            return false;
+    return false;
+}
