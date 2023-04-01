@@ -1,0 +1,39 @@
+int maxDepth;
+struct TreeNode *rootGlobal;
+int brojac = 1;
+
+int MaxDepth(struct TreeNode *root)
+{
+    int dl = 0;
+    int dr = 0;
+    if(root == NULL)
+        return 0;
+    else
+    {
+        dl = MaxDepth(root->left);
+        dr = MaxDepth(root->right);
+        return (dl > dr)?dl+1:dr+1;
+    }
+}
+
+int sum(struct TreeNode *root, int brojac)
+{
+    if(root == NULL)
+        return 0;
+    else
+    {
+        //printf("Dubina cvora %d je %d\n",root->val,brojac);
+        if(maxDepth == brojac)
+            return root->val + sum(root->left,brojac+1) + sum(root->right,brojac+1);
+        else
+            return 0 + sum(root->left,brojac+1) + sum(root->right,brojac+1);
+    }
+}
+
+int deepestLeavesSum(struct TreeNode* root){
+    rootGlobal = root;
+    maxDepth = MaxDepth(root);
+    int sol = sum(root,brojac);
+    brojac = 1;
+    return sol;
+}
