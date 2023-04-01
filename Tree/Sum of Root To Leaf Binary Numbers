@@ -1,0 +1,30 @@
+void calculateSum(struct TreeNode *root, int *sum, char *buffer, int *poz)
+{
+    if(!root) return;
+    if(!root->left && !root->right)
+    {
+        buffer[*poz] = root->val + '0';
+        (*poz)++;
+        for(int i = 0; i < *poz; i++)
+            *sum += (buffer[i]-'0') * pow(2, *poz - 1 - i);
+        (*poz)--;
+    }
+
+    buffer[*poz] = root->val + '0';
+    (*poz)++;
+
+    calculateSum(root->left, sum, buffer, poz);
+    calculateSum(root->right, sum, buffer, poz);
+    (*poz)--;
+}
+
+int sumRootToLeaf(struct TreeNode* root)
+{
+    int sum = 0;
+    int poz = 0;
+    char *buffer = (char*)malloc(1001 * sizeof(char));
+    
+    calculateSum(root, &sum, buffer, &poz);
+    free(buffer);
+    return sum;
+}
