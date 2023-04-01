@@ -1,0 +1,37 @@
+int checkPath(struct TreeNode *root, struct ListNode *head)
+{
+    if(root == NULL && head == NULL) return 0;
+    else if(root == NULL && head != NULL) return 1;
+    else if(root != NULL && head == NULL) return 0;
+    else
+    {
+        if(root->val == head->val)
+        {
+            int t = checkPath(root->left,head->next);
+            int q = checkPath(root->right,head->next);
+            
+            return t&q;
+        }
+        else
+            return 1;
+    }
+}
+
+void TraverseTree(struct TreeNode *root, struct ListNode *head, int *flag)
+{
+    if(!root) return;
+    
+    if(checkPath(root,head) == 0)
+    {
+        *flag = 1;
+        return;
+    }
+    TraverseTree(root->left,head,flag);
+    TraverseTree(root->right,head,flag);
+}
+
+bool isSubPath(struct ListNode* head, struct TreeNode* root){
+    int flag = 0;
+    TraverseTree(root,head,&flag);
+    return flag;
+}
