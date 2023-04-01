@@ -1,0 +1,22 @@
+void Solve(struct TreeNode *root, int *sum, int *number)
+{
+    if(root == NULL)
+        return;
+    
+    *number = *number*10 + root->val;
+    if(root->left == NULL && root->right == NULL)
+        *sum = *sum + *number;
+    
+    Solve(root->left,sum,number);
+    Solve(root->right,sum,number);
+    
+    *number = *number / 10;
+}
+
+int sumNumbers(struct TreeNode* root){
+    int number = 0;
+    int sum = 0;
+    
+    Solve(root,&sum,&number);
+    return sum;
+}
