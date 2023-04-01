@@ -1,0 +1,22 @@
+int solve(struct TreeNode *root, int k, int *level)
+{
+    if(!root) return -1;
+
+    int left = solve(root->left, k, level);
+    if(left != -1) return left;
+    
+    (*level)++;
+    if(*level == k)
+        return root->val;
+
+    int right = solve(root->right, k, level);
+    if(right != -1) return right;
+
+    return -1;
+}
+
+int kthSmallest(struct TreeNode* root, int k)
+{
+    int level = 0;
+    return solve(root, k, &level);
+}
