@@ -1,0 +1,13 @@
+void TraverseTree(struct TreeNode *root, int *flag, int *value)
+{
+    if(root == NULL || flag == 1) return;
+    if(root->val != *value) {*flag = 1; return;}
+    TraverseTree(root->left,flag,value);
+    TraverseTree(root->right,flag,value);
+}
+
+bool isUnivalTree(struct TreeNode* root){
+    int flag = 0, value = root->val;
+    TraverseTree(root,&flag,&value);
+    return (!flag)?true:false;
+}
