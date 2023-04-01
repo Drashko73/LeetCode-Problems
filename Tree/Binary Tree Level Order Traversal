@@ -1,0 +1,52 @@
+int **arrayOfarrays;
+int maxDepth;
+int *sizes;
+/**
+ * Return an array of arrays of size *returnSize.
+ * The sizes of the arrays are returned as *returnColumnSizes array.
+ * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
+ */
+void TraverseTree(struct TreeNode *root,int level)
+{
+    if(root == NULL)
+        return;
+    else
+    {
+        arrayOfarrays[level] = (int*)realloc(arrayOfarrays[level],(sizes[level]+1)*sizeof(int));
+        arrayOfarrays[level][sizes[level]] = root->val;
+        
+        sizes[level]++;
+        TraverseTree(root->left,level+1);
+        TraverseTree(root->right,level+1);
+    }
+}
+
+int MaxDepthOfTree(struct TreeNode *root)
+{
+    int dl = 0;
+    int dr = 0;
+    if(root == NULL)
+        return 0;
+    else
+    {
+        dl = MaxDepthOfTree(root->left);
+        dr = MaxDepthOfTree(root->right);
+        return (dl > dr)?dl+1:dr+1;
+    }
+}
+
+int** levelOrder(struct TreeNode* root, int* returnSize, int** returnColumnSizes){
+    maxDepth = MaxDepthOfTree(root);
+    arrayOfarrays = (int**)malloc(maxDepth*sizeof(int*));
+    sizes = (int*)malloc(maxDepth*sizeof(int));
+    *returnSize = maxDepth;
+    
+    for(int i=0;i<maxDepth;i++){
+        arrayOfarrays[i] = NULL;
+        sizes[i] = 0;
+    }
+    
+    TraverseTree(root,0);
+    *returnColumnSizes = sizes;
+    return arrayOfarrays;
+}
