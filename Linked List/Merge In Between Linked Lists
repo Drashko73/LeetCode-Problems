@@ -1,0 +1,25 @@
+struct ListNode* mergeInBetween(struct ListNode* list1, int a, int b, struct ListNode* list2){
+    struct ListNode *previous;
+    struct ListNode *afterOne;
+    struct ListNode *pom;
+    int i;
+    
+    pom = list1;
+    i = 0;
+    while(i < b)
+    {
+        if(i == a-1)
+            previous = pom;
+        i++;
+        pom = pom->next;
+    }
+    afterOne = pom->next;
+    pom->next = NULL;
+    
+    previous->next = list2;
+    pom = list1;
+    while(pom->next != NULL)
+        pom = pom->next;
+    pom->next = afterOne;
+    return list1;
+}
