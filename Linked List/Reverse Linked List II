@@ -1,0 +1,56 @@
+struct ListNode *ReverseLinkedList(struct ListNode *head)
+{
+    struct ListNode *previous, *current, *save;
+    
+    if(head == NULL)
+        return head;
+    
+    previous = NULL;
+    current = head;
+    while(current != NULL)
+    {
+        save = current->next;
+        current->next = previous;
+        previous = current;
+        current = save;
+    }
+    head = previous;
+    return head;
+}
+
+struct ListNode* reverseBetween(struct ListNode* head, int left, int right){
+    
+    struct ListNode *saveNext;
+    struct ListNode *forRotate;
+    struct ListNode *saveBefore;
+    struct ListNode *pom;
+    int i;
+    
+    pom = head;
+    saveBefore = NULL;
+    for(i=0;i<left-1;i++)
+    {
+        saveBefore = pom;
+        pom = pom->next;
+    }
+    forRotate = pom;
+    
+    
+    pom = head;
+    for(i=0;i<right-1;i++)
+        pom = pom->next;
+    
+    saveNext = pom->next;
+    pom->next = NULL;
+    forRotate = ReverseLinkedList(forRotate);
+    if(saveBefore == NULL)
+        head = forRotate;
+    else
+        saveBefore->next = forRotate;
+    
+    pom = head;
+    while(pom->next != NULL)
+        pom = pom->next;
+    pom->next = saveNext;
+    return head;
+}
