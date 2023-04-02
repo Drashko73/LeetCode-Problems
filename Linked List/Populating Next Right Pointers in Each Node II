@@ -1,0 +1,47 @@
+/**
+ * Definition for a Node.
+ * struct Node {
+ *     int val;
+ *     struct Node *left;
+ *     struct Node *right;
+ *     struct Node *next;
+ * };
+ */
+int depth(struct Node *root)
+{
+    if(!root) return 0;
+    int dl = 0, dr = 0;
+    dl = depth(root->left);
+    dr = depth(root->right);
+    return (dl > dr)?dl+1:dr+1;
+}
+
+void connectNodes(struct Node *root, struct Node **previous, int level, int reqLevel)
+{
+    if(!root)
+        return;
+    
+    if(level == reqLevel)
+    {
+        if(*previous == NULL)
+            *previous = root;
+        else
+            (*previous)->next = root;
+        *previous = root;
+    }
+    connectNodes(root->left,previous,level+1,reqLevel);
+    connectNodes(root->right,previous,level+1,reqLevel);
+}
+
+struct Node* connect(struct Node* root) {
+    int depthOfTree,i;
+    struct Node *previous;
+    
+    depthOfTree = depth(root);
+    for(i=1;i<depthOfTree;i++)
+    {
+        previous = NULL;
+        connectNodes(root,&previous,0,i);
+    }
+    return root;
+}
