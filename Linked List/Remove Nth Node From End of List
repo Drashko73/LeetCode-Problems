@@ -1,0 +1,35 @@
+int CountNodes(struct ListNode *head)
+{
+    int num = 0;
+    struct ListNode *pom;
+    
+    pom = head;
+    while(pom != NULL)
+    {
+        num++;
+        pom = pom->next;
+    }
+    return num;
+}
+struct ListNode* removeNthFromEnd(struct ListNode* head, int n){
+    struct ListNode *pom;
+    struct ListNode *connect;
+    int numOfNodes,i;
+    
+    numOfNodes = CountNodes(head);
+    numOfNodes -= n;
+    
+    if(numOfNodes == 0)
+        return head->next;
+    
+    pom = head;
+    connect = pom->next;
+    for(i=0;i<numOfNodes-1;i++)
+    {
+        pom = pom->next;
+    }
+    connect = pom;
+    pom = pom->next;
+    connect->next = pom->next;
+    return head;
+}
