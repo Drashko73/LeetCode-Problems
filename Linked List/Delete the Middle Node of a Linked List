@@ -1,0 +1,49 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+int numNodes(struct ListNode *head)
+{
+    int num = 0;
+    struct ListNode *pom;
+    
+    pom = head;
+    while(pom){
+        ++num;
+        pom = pom->next;
+    }
+    return num;
+}
+
+struct ListNode* deleteMiddle(struct ListNode* head){
+    if(head == NULL || head->next == NULL)
+        return NULL;
+    
+    int numOfNodes,i;
+    struct ListNode *pom, *previous, *save;
+    
+    numOfNodes = numNodes(head);
+    
+    pom = head;
+    previous = NULL;
+    for(i=0;i<numOfNodes/2;i++)
+    {
+        previous = pom;
+        pom = pom->next;
+    }
+    if(pom->next == NULL)
+    {
+        previous->next = NULL;
+        free(pom);
+    }
+    else
+    {
+        save = pom->next;
+        previous->next = save;
+        free(pom);
+    }
+    return head;
+}
