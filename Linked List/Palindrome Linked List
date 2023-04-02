@@ -1,0 +1,44 @@
+bool CompareArray(int *arr, int size)
+{
+    int i,j;
+    i = 0;
+    j = size - 1;
+    while(i<j)
+    {
+        if(arr[i] != arr[j])
+            return false;
+        i++;
+        j--;
+    }
+    return true;
+}
+
+
+
+bool isPalindrome(struct ListNode* head){
+    struct ListNode *pom;
+    int *array;
+    int numForArray,i;
+    
+    pom = head;
+    numForArray = 0;
+    while(pom != NULL)
+    {
+        numForArray++;
+        pom = pom->next;
+    }
+    array = (int*)malloc(numForArray*sizeof(int));
+    
+    pom = head;
+    i = 0;
+    while(pom != NULL)
+    {
+        array[i] = pom->val;
+        pom = pom->next;
+        i++;
+    }
+    
+    if(CompareArray(array,numForArray))
+        return true;
+    return false;
+}
