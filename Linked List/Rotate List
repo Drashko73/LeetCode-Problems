@@ -1,0 +1,47 @@
+int NumOfNodes(struct ListNode *head)
+{
+    struct ListNode *pom;
+    int num=0;
+    
+    pom = head;
+    while(pom != NULL)
+    {
+        ++num;
+        pom = pom->next;
+    }
+    return num;
+}
+
+struct ListNode *RotateOnce(struct ListNode *head)
+{
+    struct ListNode *pom;
+    struct ListNode *lastOne;
+    
+    pom = head;
+    while(pom->next != NULL)
+        pom = pom->next;
+    lastOne = pom;
+    
+    pom = head;
+    while(pom->next->next != NULL)
+        pom = pom->next;
+    pom->next = NULL;
+    
+    lastOne->next = head;
+    head = lastOne;
+    return head;
+}
+
+struct ListNode* rotateRight(struct ListNode* head, int k){
+    int nodesCount;
+    int real_k,i;
+    
+    if(head == NULL || head->next == NULL)
+        return head;
+    
+    nodesCount = NumOfNodes(head);
+    real_k = k%nodesCount;
+    for(i=0;i<real_k;i++)
+        head = RotateOnce(head);
+    return head;
+}
