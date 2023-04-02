@@ -1,0 +1,29 @@
+int NumOfNodes(struct ListNode *head)
+{
+    int num = 0;
+    struct ListNode *pom;
+    pom = head;
+    while(pom != NULL)
+    {
+        ++num;
+        pom = pom->next;
+    }
+    return num;
+}
+
+int getDecimalValue(struct ListNode* head){
+    int number = 0;
+    int numOfNodes;
+    struct ListNode *pom;
+    
+    numOfNodes = NumOfNodes(head);
+    numOfNodes--;
+    pom = head;
+    while(pom != NULL)
+    {
+        number += pom->val*pow(2,numOfNodes);
+        numOfNodes--;
+        pom = pom->next;
+    }
+    return number;
+}
