@@ -1,0 +1,61 @@
+struct ListNode *AppendToList(struct ListNode *head, int value)
+{
+    struct ListNode *pom;
+    struct ListNode *element;
+    
+    element = (struct ListNode *)malloc(sizeof(struct ListNode));
+    element->val = value;
+    element->next = NULL;
+    
+    if(head == NULL)
+        head = element;
+    else
+    {
+        pom = head;
+        while(pom->next != NULL)
+            pom = pom->next;
+        pom->next = element;
+    }
+    return head;
+}
+
+struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2){
+    struct ListNode *pom1;
+    struct ListNode *pom2;
+    struct ListNode *returnHead;
+    
+    int over,value,i;
+    returnHead = NULL;
+    
+    pom1 = l1;
+    pom2 = l2;
+    over = 0;
+    while(1)
+    {
+        if(pom1 == NULL && pom2 != NULL)
+        {
+            value = over + 0 + pom2->val;
+            pom2 = pom2->next;
+        }
+        else if(pom2 == NULL && pom1 != NULL)
+        {
+            value = over + 0 + pom1->val;
+            pom1 = pom1->next;
+        }
+        else if(pom1 != NULL && pom2 != NULL)
+        {
+            value = over + pom1->val + pom2->val;
+            pom1 = pom1->next;
+            pom2 = pom2->next;
+        }
+        else
+            break;
+        
+        over = value/10;
+        returnHead = AppendToList(returnHead,value%10);
+    }
+    if(over > 0)
+        returnHead = AppendToList(returnHead,over);
+
+    return returnHead;
+}
