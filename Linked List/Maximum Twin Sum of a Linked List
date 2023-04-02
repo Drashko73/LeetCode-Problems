@@ -1,0 +1,57 @@
+int NumOfNodes(struct ListNode *head)
+{
+    int num = 0;
+    struct ListNode *pom;
+    
+    pom = head;
+    while(pom->next != NULL)
+    {
+        ++num;
+        pom = pom->next;
+    }
+    return num+1;
+}
+
+struct ListNode *ReverseLinkedList(struct ListNode *head)
+{
+    struct ListNode *previous;
+    struct ListNode *current;
+    struct ListNode *afterOne;
+    
+    current = head;
+    previous = NULL;
+    while(current != NULL)
+    {
+        afterOne = current->next;
+        current->next = previous;
+        previous = current;
+        current = afterOne;
+    }
+    return previous;
+}
+
+int pairSum(struct ListNode* head){
+    int count,i;
+    int maksimum=-1;
+    
+    struct ListNode *secondHalf;
+    struct ListNode *pom;
+    
+    count = NumOfNodes(head);
+
+    pom = head;
+    
+    for(i=0;i<count/2;i++)
+        pom = pom->next;
+    secondHalf = pom;
+    secondHalf = ReverseLinkedList(secondHalf);
+    pom = secondHalf;
+    while(pom != NULL)
+    {
+        if(pom->val + head->val > maksimum)
+            maksimum = pom->val + head->val;
+        pom = pom->next;
+        head = head->next;
+    }
+    return maksimum;
+}
