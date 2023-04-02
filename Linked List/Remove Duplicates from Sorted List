@@ -1,0 +1,13 @@
+struct ListNode* deleteDuplicates(struct ListNode* head){
+    struct ListNode *pom;
+    struct ListNode *save;
+    
+    pom = head;
+    while(pom != NULL)
+    {
+        while(pom->next != NULL && pom->val == pom->next->val)
+            pom->next = pom->next->next;
+        pom = pom->next;
+    }
+    return head;
+}
