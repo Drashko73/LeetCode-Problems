@@ -1,0 +1,90 @@
+struct ListNode *ReverseLinkedList(struct ListNode *head)
+{
+    struct ListNode *current, *previous, *save;
+    
+    current = head;
+    previous = NULL;
+    while(current != NULL)
+    {
+        save = current->next;
+        current->next = previous;
+        previous = current;
+        current = save;
+    }
+    head = previous;
+    return head;
+}
+
+int NumOfNodes(struct ListNode *head)
+{
+    int num = 0;
+    struct ListNode *pom;
+    
+    pom = head;
+    while(pom != NULL)
+    {
+        ++num;
+        pom = pom->next;
+    }
+    return num;
+}
+
+struct ListNode* reverseKGroup(struct ListNode* head, int k){
+    int count,numberOfNodes;
+    int flag;
+    struct ListNode *pom;
+    struct ListNode *pom2;
+    struct ListNode *save;
+    struct ListNode *previous;
+    struct ListNode *previousprevious;
+    
+    numberOfNodes = NumOfNodes(head);
+    
+    if(k == 1)
+        return head;
+    if(k == numberOfNodes)
+    {
+        head = ReverseLinkedList(head);
+        return head;
+    }
+    
+    // 1 2 3 4 5
+    
+    pom = head;
+    count = 0;
+    previous = head;
+    previousprevious = NULL;
+    while(pom != NULL)
+    {
+        if(count != k-1)
+        {
+            pom = pom->next;
+            count++;
+        }
+        else
+        {
+            save = pom->next;
+            pom->next = NULL;
+            if(previous == head)
+            {
+                head = ReverseLinkedList(head);
+                previous = head;
+            }
+            else
+            {
+                previous = ReverseLinkedList(previous);
+                previousprevious->next = previous;
+            }
+            // 3 2 1 4 5
+            pom2 = previous;
+            while(pom2->next != NULL)
+                pom2 = pom2->next;
+            pom2->next = save;
+            previousprevious = pom2;
+            previous = pom2->next;
+            count = 0;
+            pom = save;
+        }
+    }
+    return head;
+}
