@@ -1,0 +1,30 @@
+struct ListNode *getLast(struct ListNode **head)
+{
+    struct ListNode *pom, *previous;
+    
+    pom = *head;
+    if(!pom) return NULL;
+    previous = NULL;
+    while(pom->next)
+    {
+        previous = pom;
+        pom = pom->next;
+    }
+    if(previous) previous->next = NULL;
+    else *head = NULL;
+    return pom;
+}
+
+void reorderList(struct ListNode* head){
+    struct ListNode *pom = head, *save, *last;
+    
+    while(pom)
+    {
+        save = pom->next;
+        last = getLast(&save);
+        if(save != NULL)
+            last->next = save;
+        pom->next = last;
+        pom = save;
+    }
+}
