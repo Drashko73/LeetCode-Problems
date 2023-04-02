@@ -1,0 +1,104 @@
+int NumOfNodes(struct ListNode *head)
+{
+    int num = 0;
+    struct ListNode *pom;
+    
+    pom = head;
+    while(pom != NULL)
+    {
+        ++num;
+        pom = pom->next;
+    }
+    return num;
+}
+void FormArray(int *array, struct ListNode* list1, struct ListNode *list2)
+{
+    struct ListNode *pom;
+    int i;
+    
+    i = 0;
+    pom = list1;
+    while(pom != NULL)
+    {
+        array[i] = pom->val;
+        i++;
+        pom = pom->next;
+    }
+    pom = list2;
+    while(pom != NULL)
+    {
+        array[i] = pom->val;
+        i++;
+        pom = pom->next;
+    }
+}
+void Swap(int *arr, int position1, int position2)
+{
+    int temp;
+    temp = arr[position1];
+    arr[position1] = arr[position2];
+    arr[position2] = temp;
+}
+int Divide(int *array, int left, int right)
+{
+    int pivot, position, i;
+    
+    pivot = array[left];
+    position = left;
+    
+    for(i=left+1;i<right;i++)
+    {
+        if(array[i] < pivot)
+        {
+            position++;
+            Swap(array,position,i);
+        }
+    }
+    Swap(array,left,position);
+    return position;
+}
+void QuickSort(int *array, int low, int high)
+{
+    int mid;
+    
+    if(low < high)
+    {
+        mid = Divide(array,low,high);
+        QuickSort(array,low,mid);
+        QuickSort(array,mid+1,high);
+    }
+}
+struct ListNode *ToList(int *array, int size)
+{
+    struct ListNode *head = NULL;
+    struct ListNode *pom, *element;
+    int i;
+    for(i=0;i<size;i++)
+    {
+        element = (struct ListNode*)malloc(sizeof(struct ListNode));
+        element->next = NULL;
+        element->val = array[i];
+        if(head == NULL)
+            head = element;
+        else{
+            pom = head;
+            while(pom->next != NULL)
+                pom = pom->next;
+            pom->next = element;
+        }
+    }
+    return head;
+}
+struct ListNode* mergeTwoLists(struct ListNode* list1, struct ListNode* list2){
+    int *array;
+    int num1, num2, i;
+    struct ListNode *mergedList;
+    
+    num1 = NumOfNodes(list1);
+    num2 = NumOfNodes(list2);
+    array = (int*)malloc((num1+num2)*sizeof(int));
+    FormArray(array,list1,list2);
+    QuickSort(array,0,num1+num2);
+    mergedList = ToList(array,num1+num2);
+    return mergedList;
+}
