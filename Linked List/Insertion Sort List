@@ -1,0 +1,25 @@
+struct ListNode* insertionSortList(struct ListNode* head){
+    if(head == NULL || head->next == NULL)
+        return head;
+    
+    struct ListNode *pom1, *pom2;
+    int value;
+    
+    pom1 = head;
+    while(pom1->next != NULL)
+    {
+        pom2 = pom1->next;
+        while(pom2 != NULL)
+        {
+            if(pom2->val < pom1->val)
+            {
+                value = pom1->val;
+                pom1->val = pom2->val;
+                pom2->val = value;
+            }
+            pom2 = pom2->next;
+        }
+        pom1 = pom1->next;
+    }
+    return head;
+}
