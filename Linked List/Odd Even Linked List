@@ -1,0 +1,54 @@
+struct ListNode* oddEvenList(struct ListNode* head){
+    if(head == NULL || head->next == NULL)
+        return head;
+    
+    struct ListNode *oddList;
+    struct ListNode *evenList;
+    struct ListNode *pom1, *pom2;
+    struct ListNode *save;
+    int i;
+    
+    oddList = NULL;
+    evenList = NULL;
+    i = 1;
+    pom1 = head;
+    while(pom1 != NULL)
+    {
+        save = pom1->next;
+        pom1->next = NULL;
+        if(i%2 == 0)
+        {
+            if(evenList == NULL)
+            {
+                evenList = pom1;
+            }
+            else
+            {
+                pom2 = evenList;
+                while(pom2->next != NULL)
+                    pom2 = pom2->next;
+                pom2->next = pom1;
+            }
+        }
+        else
+        {
+            if(oddList == NULL)
+                oddList = pom1;
+            else
+            {
+                pom2 = oddList;
+                while(pom2->next != NULL)
+                    pom2 = pom2->next;
+                pom2->next = pom1;
+            }
+        }
+        pom1 = save;
+        ++i;
+    }
+    pom1 = oddList;
+    while(pom1->next != NULL)
+        pom1 = pom1->next;
+    pom1->next = evenList;
+    head = oddList;
+    return head;
+}
