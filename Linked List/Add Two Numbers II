@@ -1,0 +1,89 @@
+struct ListNode *ReverseLinkedList(struct ListNode *head)
+{
+    struct ListNode *current;
+    struct ListNode *previous;
+    struct ListNode *next;
+    struct ListNode *save;
+    
+    current = head;
+    previous = NULL;
+    while(current != NULL)
+    {
+        save = current->next;
+        current->next = previous;
+        previous = current;
+        current = save;
+    }
+    return previous;
+}
+
+struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2){
+    l1 = ReverseLinkedList(l1);
+    l2 = ReverseLinkedList(l2);
+    struct ListNode *pom1, *pom2, *pom3;
+    struct ListNode *newElement;
+    struct ListNode *newList;
+    int over;
+    int value;
+    
+    pom1 = l1;
+    pom2 = l2;
+    
+    newList = NULL;
+    over = 0;
+    while(1)
+    {
+        if(pom1 == NULL && pom2 == NULL)
+            break;
+        
+        newElement = (struct ListNode*)malloc(sizeof(struct ListNode));
+        newElement->next = NULL;
+        if(pom1 != NULL && pom2!= NULL)
+        {
+            value = over + pom1->val + pom2->val;
+            pom1 = pom1->next;
+            pom2 = pom2->next;
+        }
+        else if(pom1 == NULL && pom2 != NULL)
+        {
+            value = over + pom2->val;
+            pom2 = pom2->next;
+        }
+        else if(pom1 != NULL && pom2 == NULL)
+        {
+            value = over + pom1->val;
+            pom1 = pom1->next;
+        }
+        newElement->val = value%10;
+        over = value/10;
+        
+        if(newList == NULL)
+            newList = newElement;
+        else
+        {
+            pom3 = newList;
+            while(pom3->next != NULL)
+                pom3 = pom3->next;
+            pom3->next = newElement;
+        }
+    }
+    if(over > 0)
+    {
+        newElement = (struct ListNode*)malloc(sizeof(struct ListNode));
+        newElement->val = over;
+        newElement->next = NULL;
+        if(newList == NULL)
+            newList = newElement;
+        else
+        {
+            pom3 = newList;
+            while(pom3->next != NULL)
+                pom3 = pom3->next;
+            pom3->next = newElement;
+        }
+    }
+    
+    newList = ReverseLinkedList(newList);
+    
+    return newList;
+}
