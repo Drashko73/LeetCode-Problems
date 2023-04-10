@@ -1,0 +1,7 @@
+/* Write your T-SQL query statement below */
+select pom.name as Department, e1.name as Employee, e1.salary as Salary
+from Employee e1 join 
+        (select d.name, e.departmentId, max(e.salary) as MaxSalary
+        from Employee e join Department d on e.departmentId = d.id
+        group by e.departmentId, d.name) pom
+on e1.salary = pom.MaxSalary and e1.departmentId = pom.departmentId
