@@ -1,0 +1,12 @@
+/* Write your T-SQL query statement below */
+select case
+when count(distinct salary) > 1
+then (select max(salary)
+      from Employee
+      where salary not in (
+          select max(salary)
+          from Employee)
+      )
+else null
+end as SecondHighestSalary
+from Employee
