@@ -1,0 +1,12 @@
+/* Write your T-SQL query statement below */
+select round(sum(i1.tiv_2016),2) as tiv_2016
+from Insurance i1
+where i1.tiv_2015 in (
+    select tiv_2015
+    from Insurance i2
+    where i2.pid <> i1.pid
+) and not exists (
+    select *
+    from Insurance i2
+    where i2.pid <> i1.pid and i2.lat = i1.lat and i2.lon = i1.lon
+)
