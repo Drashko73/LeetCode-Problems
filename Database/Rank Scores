@@ -1,0 +1,12 @@
+/* Write your T-SQL query statement below */
+with distinctScores as (
+    select distinct score
+    from Scores
+)
+select score, (
+    select count(*)+1
+    from distinctScores
+    where s1.score < distinctScores.score
+) as rank
+from Scores s1
+order by rank
