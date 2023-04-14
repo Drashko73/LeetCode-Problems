@@ -1,0 +1,8 @@
+/* Write your T-SQL query statement below */
+select id
+from Weather w1
+where dateadd(day, -1, w1.recordDate) in (
+      select distinct recordDate
+      from Weather w2
+      where w2.temperature < w1.temperature
+    )
