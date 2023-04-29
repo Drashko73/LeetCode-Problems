@@ -1,0 +1,9 @@
+/* Write your T-SQL query statement below */
+
+select contest_id, round((count(distinct user_id)*1.0)/max(Num)*100,2) as percentage
+from Register, (
+  select count(*) as Num
+  from Users
+) pom
+group by contest_id
+order by percentage desc, contest_id asc
