@@ -1,0 +1,8 @@
+/* Write your T-SQL query statement below */
+
+select p.student_id, p.student_name, p.subject_name, count(e.subject_name) as attended_exams
+from (  select *
+        from Students, Subjects) p left join Examinations e
+        on p.subject_name = e.subject_name and p.student_id = e.student_id
+group by p.student_id, p.student_name, p.subject_name
+order by p.student_id, p.subject_name asc
