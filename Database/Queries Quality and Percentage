@@ -1,0 +1,16 @@
+/* Write your T-SQL query statement below */
+
+with prosek as (
+  select query_name, count(*) as Num
+  from Queries
+  where rating < 3
+  group by query_name
+)
+
+select q.query_name, round(sum(q.rating*1.0/q.position)/count(*),2) as quality,
+  case
+    when max(p.Num) is null then 0 
+    else round(max(p.Num)*100.0/count(*),2)
+    end as poor_query_percentage
+from Queries q left join prosek p on q.query_name = p.query_name
+group by q.query_name
