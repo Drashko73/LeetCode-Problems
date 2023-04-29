@@ -1,0 +1,12 @@
+/* Write your T-SQL query statement below */
+
+select machine_id, round(sum(timestamp)/count(distinct process_id),3) as processing_time
+from ( 
+      select machine_id, process_id, activity_type,
+          case
+              when activity_type = 'start' then -1 * timestamp
+              else timestamp
+          end as timestamp
+      from Activity
+) pom
+group by machine_id
