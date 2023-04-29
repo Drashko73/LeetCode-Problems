@@ -1,0 +1,18 @@
+/* Write your T-SQL query statement below */
+with help as (
+    select *
+    from (
+        select distinct customer_id
+        from Customer
+    ) p , Product
+)
+
+select customer_id
+from Customer
+except
+select customer_id
+from (
+    select * from help
+    except
+    select * from Customer
+) pom
