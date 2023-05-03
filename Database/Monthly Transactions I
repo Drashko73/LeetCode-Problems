@@ -1,0 +1,29 @@
+/* Write your T-SQL query statement below */
+with formatted_date as (
+  select *, cast(datepart(year,trans_date) as varchar(4))+'-'+ case
+      when datepart(month,trans_date) < 10 then '0'+cast(datepart(month,trans_date) as varchar(2)) 
+      else cast(datepart(month,trans_date) as varchar(2))
+      end new_date
+  from Transactions
+)
+
+select new_date as month, country, count(*) as trans_count, (
+  select count(*)
+  from formatted_date f2
+  where f2.new_date = f1.new_date and f2.country = f1.country and state='approved'
+) as approved_count
+, sum(amount) as trans_total_amount
+, case
+    when (
+      select count(*)
+      from formatted_date f2
+      where f2.new_date = f1.new_date and f2.country = f1.country and state='approved'
+    ) = 0 then 0
+    else (
+      select sum(amount)
+      from formatted_date f3
+      where f3.new_date = f1.new_date and f3.country = f1.country and state='approved'
+    )
+  end as approved_total_amount
+from formatted_date f1
+group by new_date, country
