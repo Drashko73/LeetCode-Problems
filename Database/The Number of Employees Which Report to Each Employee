@@ -1,0 +1,16 @@
+/* Write your T-SQL query statement below */
+select employee_id, name, (
+    select count(*)
+    from Employees e2
+    where e2.reports_to = e1.employee_id
+) as reports_count , (
+    select round(avg(age * 1.0),0)
+    from Employees e2
+    where e2.reports_to = e1.employee_id
+) average_age
+from Employees e1
+where employee_id in (
+    select reports_to
+    from Employees
+)
+order by employee_id
