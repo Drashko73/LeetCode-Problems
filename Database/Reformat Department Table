@@ -1,0 +1,16 @@
+/* Write your T-SQL query statement below */
+select id,
+(select sum(revenue) from Department where id = d.id and month = 'Jan') as 'Jan_Revenue',
+(select sum(revenue) from Department where id = d.id and month = 'Feb') as 'Feb_Revenue',
+(select sum(revenue) from Department where id = d.id and month = 'Mar') as 'Mar_Revenue',
+(select sum(revenue) from Department where id = d.id and month = 'Apr') as 'Apr_Revenue',
+(select sum(revenue) from Department where id = d.id and month = 'May') as 'May_Revenue',
+(select sum(revenue) from Department where id = d.id and month = 'Jun') as 'Jun_Revenue',
+(select sum(revenue) from Department where id = d.id and month = 'Jul') as 'Jul_Revenue',
+(select sum(revenue) from Department where id = d.id and month = 'Aug') as 'Aug_Revenue',
+(select sum(revenue) from Department where id = d.id and month = 'Sep') as 'Sep_Revenue',
+(select sum(revenue) from Department where id = d.id and month = 'Oct') as 'Oct_Revenue',
+(select sum(revenue) from Department where id = d.id and month = 'Nov') as 'Nov_Revenue',
+(select sum(revenue) from Department where id = d.id and month = 'Dec') as 'Dec_Revenue'
+from Department d
+group by id
